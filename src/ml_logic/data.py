@@ -13,7 +13,7 @@ def load_data(list_urls) -> list :
         loader = UnstructuredURLLoader(urls=list_urls)
         data = loader.load()
     except Exception as e:
-        print("Error: Could not load data. Please check your URLs and try again.")
+        print("❌ Could not load data. Please check your URLs and try again.")
         print(e)
 
     return data
@@ -32,7 +32,7 @@ def split_data(data) -> list :
         )
         docs = text_splitter.split_documents(data)
     except Exception as e:
-        print("Error: Could not split data. Please check your data and try again.")
+        print("❌ Could not split data. Please check your data and try again.")
         print(e)
 
     return docs
@@ -45,9 +45,9 @@ def data_workflow(list_urls) -> list :
     Return: docs - list of strings
     """
     data = load_data(list_urls)
-    print("Data loaded successfully.")
+    print("✅ Data loaded successfully. ")
 
     docs = split_data(data)
-    print("Data splitted successfully.")
+    print("✅ Data splitted successfully.")
 
     return docs

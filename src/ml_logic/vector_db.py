@@ -14,7 +14,7 @@ def load_vector_store(docs) -> FAISS:
         embeddings = OpenAIEmbeddings()
         vectorstore_openai = FAISS.from_documents(docs, embeddings)
     except Exception as e:
-        print("Error: Could not load vector store. Please check your data and try again.")
+        print("❌ Could not load vector store. Please check your data and try again.")
         print(e)
 
     return vectorstore_openai
@@ -29,8 +29,7 @@ def save_vector_store(vectorstore_openai, file_path) -> None:
     """
 
     try:
-        with open(file_path+".plk", "wb") as f:
-            pickle.dump(vectorstore_openai, f)
+        vectorstore_openai.save_local(file_path)
     except Exception as e:
-        print("Error: Could not save vector store. Please check your data and try again.")
+        print("❌ Could not save vector store. Please check your data and try again.")
         print(e)
