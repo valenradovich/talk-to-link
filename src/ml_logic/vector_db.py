@@ -1,8 +1,7 @@
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
-import pickle
 
-def load_vector_store(docs) -> FAISS:
+def load_vector_store(docs, openai_api_key) -> FAISS:
     """Load vector store from documents provided by the user.
 
     Keyword arguments:
@@ -11,7 +10,7 @@ def load_vector_store(docs) -> FAISS:
     """
 
     try:
-        embeddings = OpenAIEmbeddings()
+        embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
         vectorstore_openai = FAISS.from_documents(docs, embeddings)
     except Exception as e:
         print("❌ Could not load vector store. Please check your data and try again.")
