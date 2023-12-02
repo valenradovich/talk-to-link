@@ -3,6 +3,8 @@ from src.ml_logic.model import load_model
 from src.interface.main import prepare_data, talk_to_link
 from src.params import VECTOR_DB_PATH
 
+file_path = st.secrets.get("VECTOR_DB_PATH")
+
 st.set_page_config(
     page_title="Talk to Links", page_icon="💬", layout="wide", initial_sidebar_state="expanded"
 )
@@ -23,7 +25,7 @@ openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password", help="
 if openai_api_key:
     llm = load_model(openai_api_key)
 else:
-    llm = None
+    st.error("❌ Please enter your OpenAI API key.")
 
 st.sidebar.divider()
 
@@ -83,7 +85,7 @@ if prompt:
         st.stop()
     st.session_state.messages.append({"role": "user", "content": prompt})
     st.chat_message("user").write(prompt)
-    result = talk_to_link(llm=llm, prompt=prompt, file_path=VECTOR_DB_PATH)
+    result = talk_to_link(llm=llm, prompt=prompt, file_path=file_path)
     st.session_state.messages.append({"role": "assistant", "content": result["answer"]})
 
     # Display sources, if available
