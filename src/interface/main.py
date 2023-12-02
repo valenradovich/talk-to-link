@@ -7,7 +7,7 @@ from langchain.vectorstores import FAISS
 
 from src.params import VECTOR_DB_PATH
 
-def talk_to_link(llm, prompt, file_path=VECTOR_DB_PATH, vectorstore=None):
+def talk_to_link(llm, prompt, file_path, vectorstore=None):
     try:
         if vectorstore is None:
             vector_store = FAISS.load_local(file_path, OpenAIEmbeddings())
