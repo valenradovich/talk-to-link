@@ -86,7 +86,9 @@ if prompt:
     st.session_state.messages.append({"role": "user", "content": prompt})
     st.chat_message("user").write(prompt)
     result = talk_to_link(llm=llm, prompt=prompt, file_path=file_path)
-    st.session_state.messages.append({"role": "assistant", "content": result["answer"]})
+
+    if isinstance(result, dict) and "answer" in result:
+        st.session_state.messages.append({"role": "assistant", "content": result["answer"]})
 
     # Display sources, if available
     sources = result.get("sources", "")
