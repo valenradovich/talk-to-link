@@ -64,10 +64,9 @@ if process_url_clicked:
         st.stop()
     st.info("⏳ Please wait while we process your URLs...")
 
-    done = prepare_data(urls, openai_api_key)
-    st.session_state["vector_db"] = done[1]
+    st.session_state["vector_db"] = prepare_data(urls, openai_api_key)
 
-    if done[0] is False:
+    if st.session_state["vector_db"] is False:
         st.exception(
             "❌ Could not prepare data. Please check your urls and try again."
         )

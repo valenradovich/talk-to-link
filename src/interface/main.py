@@ -34,12 +34,12 @@ def prepare_data(list_urls, openai_api_key):
         save_vector_store(vectorstore_openai, file_path) # saving locally, not the best but it enough for this demo
         print("✅ Data prepared successfully.")
 
-        return True, vectorstore_openai
+        return vectorstore_openai
     except Exception as e:
         print("❌ Could not prepare data. Please check your url and try again.")
         print(e)
 
-        return False, None
+        return False
 
 def main(urls_list, prompt):
     result = talk_to_link(llm=llm, prompt=prompt, file_path=VECTOR_DB_PATH)
