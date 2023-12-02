@@ -20,7 +20,10 @@ st.sidebar.write(
 
 openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password", help="You can get your API key from [https://platform.openai.com/account/api-keys](https://platform.openai.com/account/api-keys).")
 
-llm = load_model(openai_api_key)
+if openai_api_key:
+    llm = load_model(openai_api_key)
+else:
+    llm = None
 
 st.sidebar.divider()
 
