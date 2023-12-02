@@ -39,8 +39,7 @@ def prepare_data(list_urls, openai_api_key):
         print("❌ Could not prepare data. Please check your url and try again.")
         print(e)
 
-        return False, vectorstore_openai
-
+        return False, None
 
 def main(urls_list, prompt):
     result = talk_to_link(llm=llm, prompt=prompt, file_path=VECTOR_DB_PATH)
