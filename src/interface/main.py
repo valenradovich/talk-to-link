@@ -7,7 +7,7 @@ from langchain.vectorstores import FAISS
 
 from src.params import VECTOR_DB_PATH
 
-def talk_to_link(llm, prompt, file_path, vectorstore=None):
+def talk_to_link(llm, prompt, file_path=None, vectorstore=None):
     try:
         if vectorstore is None:
             vector_store = FAISS.load_local(file_path, OpenAIEmbeddings())
@@ -32,11 +32,14 @@ def prepare_data(list_urls, openai_api_key):
         # loading and saving vector store
         vectorstore_openai = load_vector_store(docs, openai_api_key)
         save_vector_store(vectorstore_openai, file_path) # saving locally, not the best but it enough for this demo
+        print("✅ Data prepared successfully.")
+
+        return True, vectorstore_openai
     except Exception as e:
         print("❌ Could not prepare data. Please check your url and try again.")
         print(e)
 
-        return False, e
+        return False, vectorstore_openai
 
 
 def main(urls_list, prompt):
