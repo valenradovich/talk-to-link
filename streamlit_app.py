@@ -90,11 +90,11 @@ if prompt:
     if isinstance(result, dict) and "answer" in result:
         st.session_state.messages.append({"role": "assistant", "content": result["answer"]})
 
-    # Display sources, if available
-    sources = result.get("sources", "")
-    if sources:
-        sources_list = sources.split("\n")  # Split the sources by newline
-        for source in sources_list:
-            st.chat_message("assistant").write(result["answer"] + "\nSources: " + source)
-    else:
-        st.chat_message("assistant").write(result["answer"])
+        # Display sources, if available
+        sources = result.get("sources", "")
+        if sources:
+            sources_list = sources.split("\n")  # Split the sources by newline
+            for source in sources_list:
+                st.chat_message("assistant").write(result["answer"] + "\nSources: " + source)
+        else:
+            st.chat_message("assistant").write(result["answer"])
