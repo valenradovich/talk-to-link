@@ -64,7 +64,9 @@ if process_url_clicked:
         st.stop()
     st.info("⏳ Please wait while we process your URLs...")
     done = prepare_data(urls, openai_api_key)
-    st.session_state['vector_db'] = done[1]
+
+    if "vector_db" not in st.session_state:
+        st.session_state["vector_db"] = done[1]
 
     if done is False:
         st.exception(
