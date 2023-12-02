@@ -1,3 +1,4 @@
+import time
 import streamlit as st
 from src.ml_logic.model import load_model
 from src.interface.main import prepare_data, talk_to_link
@@ -55,12 +56,15 @@ st.sidebar.write(
     )
 main_placeholder = st.empty()
 
+vector_db = None
+
 if process_url_clicked:
     if not openai_api_key:
         st.error("❌ Please enter your OpenAI API key.")
         st.stop()
     st.info("⏳ Please wait while we process your URLs...")
     done = prepare_data(urls, openai_api_key)
+    st.session_state['vector_db'] = done[1]
 
     if done is False:
         st.exception(
@@ -85,16 +89,21 @@ if prompt:
         st.stop()
     st.session_state.messages.append({"role": "user", "content": prompt})
     st.chat_message("user").write(prompt)
-    result = talk_to_link(llm=llm, prompt=prompt, file_path=file_path)
+    with st.spinner("Thinking..."):
+        time.sleep(1)
+        result = talk_to_link(llm=llm, prompt=prompt, vectorstore=st.session_state['vector_db'])
 
-    if isinstance(result, dict) and "answer" in result:
-        st.session_state.messages.append({"role": "assistant", "content": result["answer"]})
-
-        # Display sources, if available
-        sources = result.get("sources", "")
-        if sources:
-            sources_list = sources.split("\n")  # Split the sources by newline
-            for source in sources_list:
-                st.chat_message("assistant").write(result["answer"] + "\nSources: " + source)
+        if isinstance(result, dict) and "answer" in result:
+            st.session_state.messages.append({"role": "assistant", "content": result["answer"]})
+            # Display sources, if available
+            sources = result.get("sources", "")
+            if sources:
+                sources_list = sources.split("\n")  # Split the sources by newline
+                for source in sources_list:
+                    st.chat_message("assistant").write(result["answer"] + "\nSources: " + source)
+            else:
+                with st.spinner("Thinking..."):
+                    time.sleep(3)
+                    st.chat_message("assistant").write(result["answer"])
         else:
-            st.chat_message("assistant").write(result["answer"])
+            st.exception("❌ Could not get an answer. Please try again.")
