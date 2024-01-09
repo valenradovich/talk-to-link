@@ -25,6 +25,7 @@ openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password", help="
 
 if openai_api_key:
     llm = load_model(openai_api_key)
+    #st.success(openai_api_key)
 else:
     st.error("❌ Please enter your OpenAI API key.")
 
